@@ -37,7 +37,7 @@ export function Upload() {
 
   return (
     <div className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
-      <FileUpload onChange={handleFileUpload} />
+      <FileUpload onChange={handleUpload} />
       <div className="mt-4 flex justify-center">
         <InteractiveHoverButton 
           className="bg-cyan-600 text-teal-100"
