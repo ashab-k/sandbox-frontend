@@ -38,7 +38,10 @@ export function Upload() {
   return (
     <div className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
       <FileUpload onChange={handleUpload} />
-    </div>
+      <InteractiveHoverButton className="bg-cyan-600 text-teal-100">
+              Hover Me
+            </InteractiveHoverButton>
+      </div>
   );
 }
 
@@ -53,19 +56,14 @@ const Hero = () => {
           <h2 className="text-4xl text-gray-800 font-extrabold mx-auto md:text-5xl">
             Get to know your files with{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4F46E5] to-[#E114E5]">
-              GaandBox
+              MalBox
             </span>
           </h2>
           <p className="max-w-2xl mx-auto">
             The all-in-one platform for automated dynamic malware analysis:
-            GaandBox is a powerful tool that helps you to understand the
+            MalBox is a powerful tool that helps you to understand the
             behavior of malware in a safe environment.
           </p>
-          <div className="items-center justify-center gap-x-3 space-y-3 sm:flex sm:space-y-0">
-            <InteractiveHoverButton className="bg-cyan-600 text-teal-100">
-              Hover Me
-            </InteractiveHoverButton>
-          </div>
           <Upload />
         </div>
         <div className="mt-14">

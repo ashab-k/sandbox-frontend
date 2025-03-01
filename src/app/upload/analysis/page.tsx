@@ -59,7 +59,7 @@ export default function Home() {
       <div className="flex items-center justify-center gap-2 mb-8">
         <Shield className="h-8 w-8 text-primary" />
         <h1 className="text-3xl font-bold text-center">
-          Malware Analysis Dashboard
+          Malware Insight
         </h1>
       </div>
 
