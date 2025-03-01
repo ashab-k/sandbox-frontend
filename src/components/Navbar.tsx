@@ -6,8 +6,8 @@ import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  { name: "Services", href: "/services" },
+  { name: "Code", href: "/upload/code" },
+  { name: "VirusTotal", href: "/upload/analysis" },
   { name: "Contact", href: "/contact" },
 ];
 
@@ -15,10 +15,10 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-gray-900 text-white p-4 shadow-md">
+    <nav className="bg-gray-900 text-white p-4 shadow-md fixed w-[100%] z-999">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold">
-          MyBrand
+          MalBox
         </Link>
 
         {/* Mobile Menu Button */}

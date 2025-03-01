@@ -12,13 +12,14 @@ export default function Home() {
 
   useEffect(() => {
     // In a real app, this would be an API call
-    import("@/lib/data.json").then((importedData) => {
-      setData(importedData.default);
-      setLoading(false);
-    });
+    const storedData = localStorage.getItem("virus_total");
+    console.log(storedData);
+    if (storedData) {
+      setData(JSON.parse(storedData));
+    }
   }, []);
 
-  if (loading) {
+  if (!loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
@@ -58,9 +59,7 @@ export default function Home() {
     <main className="container mx-auto py-8 px-4">
       <div className="flex items-center justify-center gap-2 mb-8">
         <Shield className="h-8 w-8 text-primary" />
-        <h1 className="text-3xl font-bold text-center">
-          Malware Insight
-        </h1>
+        <h1 className="text-3xl font-bold text-center">Malware Insight</h1>
       </div>
 
       <MalwareAnalysisHeader

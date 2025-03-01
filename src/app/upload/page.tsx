@@ -15,12 +15,18 @@ const Hero = () => {
   const [loading, setLoading] = useState(false);
   const [codeResponseLoading, setCodeResponseLoading] = useState(false);
   const [decompilationSuccess, setDecompilationSuccess] = useState(false);
+  const [virusTotalLoading, setVirusTotalLoading] = useState(false);
+  const [virusTotalSuccess, setVirusTotalSucess] = useState(false);
+  const [capaLoading, setCapaLoading] = useState(false);
+  const [capaSuccess, setCapaSuccess] = useState(false);
 
   const handleFileChange = (files: File[]) => {
     if (files.length > 0) {
       setSelectedFile(files[0]);
       // Reset states when a new file is selected
       setDecompilationSuccess(false);
+      setVirusTotalSucess(false);
+      setCapaSuccess(false);
       setResponseData(null);
     }
   };
@@ -62,6 +68,52 @@ const Hero = () => {
       setCodeResponseLoading(false);
       setLoading(false);
     }
+
+    try {
+      setVirusTotalLoading(true);
+      const response = await fetch("/api/virusTotal", {
+        method: "POST",
+        body: formData,
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        alert("Processing failed!");
+        return;
+      }
+
+      const data = await response.json();
+      localStorage.setItem("virus_total", JSON.stringify(data));
+      setVirusTotalSucess(true);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      alert("Something went wrong!");
+    } finally {
+      setVirusTotalLoading(false);
+    }
+
+    try {
+      setCapaLoading(true);
+      const response = await fetch("/api/capa", {
+        method: "POST",
+        body: formData,
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        alert("Processing failed!");
+        return;
+      }
+
+      const data = await response.json();
+      localStorage.setItem("capa_response", JSON.stringify(data));
+      setCapaSuccess(true);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      alert("Something went wrong!");
+    } finally {
+      setCapaLoading(false);
+    }
   };
 
   return (
@@ -100,6 +152,20 @@ const Hero = () => {
             loadingText="Decompiling Code...."
             successText="Successfully Decompiled Code"
             link="/upload/code"
+          />
+          <ProcessingStatus
+            loading={virusTotalLoading}
+            success={virusTotalSuccess}
+            loadingText="Scanning with VirusTotal...."
+            successText="Successfully Scanned with VirusTotal"
+            link="/upload/virus"
+          />
+          <ProcessingStatus
+            loading={capaLoading}
+            success={capaSuccess}
+            loadingText="Analyzing with CAPA...."
+            successText="Successfully Analyzed with CAPA"
+            link="/upload/capa"
           />
         </div>
       </div>
