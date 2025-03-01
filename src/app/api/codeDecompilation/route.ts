@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const PROCESSING_SERVER_URL = "https://external-server.com/process";
+const PROCESSING_SERVER_URL =
+  "https://a3d4-14-99-167-142.ngrok-free.app/upload";
 
 export async function POST(req: NextRequest) {
   try {
@@ -27,8 +28,8 @@ export async function POST(req: NextRequest) {
     const data = await response.json(); // Expect JSON response with two text fields
     console.log(data);
     return NextResponse.json({
-      report: data.report,
-      extracted: data.extracted,
+      decompiled_text: data.decompiled_text,
+      objdump_text: data.objdump_text,
     });
   } catch (error) {
     console.error("Error processing file:", error);

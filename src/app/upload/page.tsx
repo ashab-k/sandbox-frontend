@@ -4,53 +4,66 @@ import Image from "next/image";
 import { InteractiveHoverButton } from "@/components/magicui/interactive-hover-button";
 import { FileUpload } from "@/components/ui/file-upload";
 import React, { useState } from "react";
+import ProcessingStatus from "@/components/ProcessingStatus";
 
-export function Upload() {
+const Hero = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [responseData, setResponseData] = useState<{
     report: string;
     extracted: string;
   } | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [codeResponseLoading, setCodeResponseLoading] = useState(false);
+  const [decompilationSuccess, setDecompilationSuccess] = useState(false);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    setSelectedFile(file || null);
+  const handleFileChange = (files: File[]) => {
+    if (files.length > 0) {
+      setSelectedFile(files[0]);
+      // Reset states when a new file is selected
+      setDecompilationSuccess(false);
+      setResponseData(null);
+    }
   };
 
   const handleUpload = async () => {
+    if (!selectedFile) {
+      alert("Please select a file first!");
+      return;
+    }
+
+    setLoading(true);
+    setCodeResponseLoading(true);
+    setDecompilationSuccess(false);
+
     const formData = new FormData();
     formData.append("file", selectedFile);
 
-    const response = await fetch("/api/codeDecompilation", {
-      method: "POST",
-      body: formData,
-    });
+    try {
+      const response = await fetch("/api/codeDecompilation", {
+        method: "POST",
+        body: formData,
+        cache: "no-store",
+      });
 
-    /*  if (!response.ok) {
-      alert("Processing failed!");
-      return;
-    } */
+      if (!response.ok) {
+        alert("Processing failed!");
+        return;
+      }
 
-    const data = await response.json();
-    setResponseData(data);
+      const data = await response.json();
+      setResponseData(data);
+      localStorage.setItem("code_response", JSON.stringify(data));
+      setDecompilationSuccess(true);
+      console.log(data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      alert("Something went wrong!");
+    } finally {
+      setCodeResponseLoading(false);
+      setLoading(false);
+    }
   };
 
-  return (
-    <div className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
-      <FileUpload onChange={handleUpload} />
-      <div className="mt-4 flex justify-center">
-        <InteractiveHoverButton 
-          className="bg-cyan-600 text-teal-100"
-          onClick={() => window.location.href = '/upload/analysis'}
-        >
-          Analyse
-        </InteractiveHoverButton>
-      </div>
-    </div>
-);
-}
-
-const Hero = () => {
   return (
     <section className="bg-gray-100">
       <div className="max-w-screen-xl mx-auto px-4 py-28 gap-12 text-gray-600 md:px-8">
@@ -66,18 +79,27 @@ const Hero = () => {
           </h2>
           <p className="max-w-2xl mx-auto">
             The all-in-one platform for automated dynamic malware analysis:
-            MalBox is a powerful tool that helps you to understand the
-            behavior of malware in a safe environment.
+            MalBox is a powerful tool that helps you to understand the behavior
+            of malware in a safe environment.
           </p>
-          <Upload />
-        </div>
-        <div className="mt-14">
-          <Image
-            src=""
-            className="w-full shadow-lg rounded-lg border"
-            alt="Analysis preview"
-            width={1200}
-            height={800}
+          <div className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
+            <FileUpload onChange={handleFileChange} />
+            <div className="mt-4 flex justify-center">
+              <InteractiveHoverButton
+                className="bg-cyan-600 text-teal-100"
+                onClick={handleUpload}
+                disabled={loading || !selectedFile}
+              >
+                {loading ? "Processing..." : "Submit"}
+              </InteractiveHoverButton>
+            </div>
+          </div>{" "}
+          <ProcessingStatus
+            loading={codeResponseLoading}
+            success={decompilationSuccess}
+            loadingText="Decompiling Code...."
+            successText="Successfully Decompiled Code"
+            link="/upload/code"
           />
         </div>
       </div>

@@ -3,10 +3,18 @@
 import Editor from "@monaco-editor/react";
 
 interface MonacoEditorProps {
-  cCode: string;
-  setCCode: (code: string) => void;
-  assemblyCode: string;
-  setAssemblyCode: (code: string) => void;
+  cCode: string | undefined;
+  setCCode: React.Dispatch<
+    React.SetStateAction<
+      { decompiled_text: string; objdump_text: string } | undefined
+    >
+  >;
+  assemblyCode: string | undefined;
+  setAssemblyCode: React.Dispatch<
+    React.SetStateAction<
+      { decompiled_text: string; objdump_text: string } | undefined
+    >
+  >;
 }
 
 export default function MonacoEditor({
@@ -26,7 +34,7 @@ export default function MonacoEditor({
           language="asm"
           theme="vs-dark"
           value={assemblyCode}
-          onChange={(value) => setAssemblyCode(value || "")}
+          onChange={(value) => setAssemblyCode(value)}
         />
       </div>
 

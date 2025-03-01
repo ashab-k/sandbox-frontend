@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import MonacoEditor from "@/components/MonacoEditor";
 
 export default function Home() {
-  const [cCode, setCCode] = useState("");
-
-  const [assemblyCode, setAssemblyCode] = useState("");
+  const [codeData, setCodeData] = useState<{
+    decompiled_text: string;
+    objdump_text: string;
+  }>();
   const fetchFileContent = async (filePath: string) => {
     const response = await fetch(filePath);
     return response.text();
@@ -14,16 +15,18 @@ export default function Home() {
 
   // Load both text files on component mount
   useEffect(() => {
-    fetchFileContent("/test.exe_decompiled.txt").then(setCCode);
-    fetchFileContent("/test.exe_objdump.txt").then(setAssemblyCode);
+    const storedData = localStorage.getItem("code_response");
+    if (storedData) {
+      setCodeData(JSON.parse(storedData));
+    }
   }, []);
 
   return (
     <MonacoEditor
-      cCode={cCode}
-      setCCode={setCCode}
-      assemblyCode={assemblyCode}
-      setAssemblyCode={setAssemblyCode}
+      cCode={codeData?.decompiled_text}
+      assemblyCode={codeData?.objdump_text}
+      setAssemblyCode={setCodeData}
+      setCCode={setCodeData}
     />
   );
 }
