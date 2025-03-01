@@ -8,7 +8,7 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "Code", href: "/upload/code" },
   { name: "VirusTotal", href: "/upload/analysis" },
-  { name: "Contact", href: "/contact" },
+  { name: "Capa", href: "/upload/capa" },
 ];
 
 export default function Navbar() {
