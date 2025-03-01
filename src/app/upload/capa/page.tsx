@@ -1,38 +1,17 @@
+"use client";
 import AttackTree from "@/components/attack-tree";
 import AttackGraph from "@/components/attack-graph";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect, useState } from "react";
 
-export default async function Home() {
-  const attackData = {
-    Collection: [
-      {
-        "Data from Information Repositories [T1213]":
-          "https://attack.mitre.org/techniques/T1213",
-      },
-    ],
-    "Defense Evasion": [
-      {
-        "Reflective Code Loading [T1620]":
-          "https://attack.mitre.org/techniques/T1620",
-      },
-    ],
-    Discovery: [
-      {
-        "File and Directory Discovery [T1083]":
-          "https://attack.mitre.org/techniques/T1083",
-      },
-      {
-        "System Location Discovery [T1614]":
-          "https://attack.mitre.org/techniques/T1614",
-      },
-    ],
-    Persistence: [
-      {
-        "Office Application Startup::Add-ins [T1137.006]":
-          "https://attack.mitre.org/techniques/T1137/006",
-      },
-    ],
-  };
+export default function Home() {
+  const [attackData, setAttackData] = useState<any>();
+  useEffect(() => {
+    const storedData = localStorage.getItem("capa_response");
+    if (storedData) {
+      setAttackData(JSON.parse(storedData));
+    }
+  }, []);
 
   return (
     <main className="min-h-screen p-6 bg-slate-50">

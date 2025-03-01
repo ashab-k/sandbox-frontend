@@ -6,9 +6,10 @@ import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { name: "Home", href: "/" },
-  { name: "Code", href: "/upload/code" },
   { name: "VirusTotal", href: "/upload/analysis" },
+  { name: "Dynamic Analysis", href: "/upload/dynamic" },
   { name: "Capa", href: "/upload/capa" },
+  { name: "Code", href: "/upload/code" },
 ];
 
 export default function Navbar() {

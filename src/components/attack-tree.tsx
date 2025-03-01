@@ -5,14 +5,17 @@ import { ChevronDown, ChevronRight, ExternalLink } from "lucide-react";
 import type { AttackData, TechniqueItem } from "@/lib/types";
 
 interface AttackTreeProps {
-  data: AttackData;
+  data?: AttackData; // Make `data` optional to handle undefined cases
 }
 
-export default function AttackTree({ data }: AttackTreeProps) {
+export default function AttackTree({ data = {} }: AttackTreeProps) {
   const [expandedTactics, setExpandedTactics] = useState<
     Record<string, boolean>
   >(
-    Object.keys(data).reduce((acc, tactic) => ({ ...acc, [tactic]: true }), {})
+    Object.keys(data || {}).reduce(
+      (acc, tactic) => ({ ...acc, [tactic]: true }),
+      {}
+    )
   );
 
   const toggleTactic = (tactic: string) => {
@@ -41,11 +44,14 @@ export default function AttackTree({ data }: AttackTreeProps) {
           {expandedTactics[tactic] && (
             <div className="ml-6 mt-2 space-y-2">
               {techniques.map((technique: TechniqueItem, index: number) => {
-                const [name, url] = Object.entries(technique)[0];
+                const [name, url] = Object.entries(technique)[0] || [
+                  "Unknown",
+                  "#",
+                ];
                 return (
                   <div
                     key={index}
-                    className="flex items-center p-3 bg-white border border-gray-200 rounded-md hover:bg-gblue-50 transition-colors"
+                    className="flex items-center p-3 bg-white border border-gray-200 rounded-md hover:bg-blue-50 transition-colors"
                   >
                     <div className="flex-1">
                       <span className="font-medium text-gray-800">{name}</span>

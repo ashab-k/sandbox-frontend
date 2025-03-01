@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const PROCESSING_SERVER_URL = "https://aead-14-99-167-142.ngrok-free.app/capa";
+const PROCESSING_SERVER_URL = "https://77dd-14-99-167-142.ngrok-free.app/capa";
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
     const data = await response.json(); // Expect JSON response with two text fields
     console.log(data);
-    return NextResponse.json(data);
+    return NextResponse.json(data.capa_report);
   } catch (error) {
     console.error("Error processing file:", error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });

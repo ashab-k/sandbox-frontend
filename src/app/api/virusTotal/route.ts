@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const PROCESSING_SERVER_URL =
-  "https://aead-14-99-167-142.ngrok-free.app/virustotal";
+  "https://77dd-14-99-167-142.ngrok-free.app/virustotal";
 
 export async function POST(req: NextRequest) {
   try {

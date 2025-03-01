@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Editor, { OnMount } from "@monaco-editor/react";
 import MarkdownIt from "markdown-it";
+import * as monaco from "monaco-editor";
 import { div } from "framer-motion/client";
 interface MonacoEditorProps {
   cCode: string | undefined;
