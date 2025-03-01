@@ -37,12 +37,17 @@ export function Upload() {
 
   return (
     <div className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
-      <FileUpload onChange={handleUpload} />
-      <InteractiveHoverButton className="bg-cyan-600 text-teal-100">
-              Hover Me
-            </InteractiveHoverButton>
+      <FileUpload onChange={handleFileUpload} />
+      <div className="mt-4 flex justify-center">
+        <InteractiveHoverButton 
+          className="bg-cyan-600 text-teal-100"
+          onClick={() => window.location.href = '/upload/analysis'}
+        >
+          Analyse
+        </InteractiveHoverButton>
       </div>
-  );
+    </div>
+);
 }
 
 const Hero = () => {
