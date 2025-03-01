@@ -6,7 +6,11 @@ import { FileUpload } from "@/components/ui/file-upload";
 import React, { useState } from "react";
 
 export function Upload() {
-  const [files, setFiles] = useState<File[]>([]);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [responseData, setResponseData] = useState<{
+    report: string;
+    extracted: string;
+  } | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
