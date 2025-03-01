@@ -8,14 +8,32 @@ import React, { useState } from "react";
 export function Upload() {
   const [files, setFiles] = useState<File[]>([]);
 
-  const handleFileUpload = (uploadedFiles: File[]) => {
-    setFiles(uploadedFiles);
-    console.log(uploadedFiles);
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    setSelectedFile(file || null);
+  };
+
+  const handleUpload = async () => {
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    const response = await fetch("/api/codeDecompilation", {
+      method: "POST",
+      body: formData,
+    });
+
+    /*  if (!response.ok) {
+      alert("Processing failed!");
+      return;
+    } */
+
+    const data = await response.json();
+    setResponseData(data);
   };
 
   return (
     <div className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
-      <FileUpload onChange={handleFileUpload} />
+      <FileUpload onChange={handleUpload} />
     </div>
   );
 }
