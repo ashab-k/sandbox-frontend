@@ -84,6 +84,7 @@ const Hero = () => {
 
       const data = await response.json();
       localStorage.setItem("virus_total", JSON.stringify(data));
+
       setVirusTotalSucess(true);
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -126,7 +127,7 @@ const Hero = () => {
           <h2 className="text-4xl text-gray-800 font-extrabold mx-auto md:text-5xl">
             Get to know your files with{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4F46E5] to-[#E114E5]">
-              MalBox
+              MALbox
             </span>
           </h2>
           <p className="max-w-2xl mx-auto">
@@ -138,7 +139,7 @@ const Hero = () => {
             <FileUpload onChange={handleFileChange} />
             <div className="mt-4 flex justify-center">
               <InteractiveHoverButton
-                className="bg-cyan-600 text-teal-100"
+                className="bg-cyan-600 text-teal-100 mb-10"
                 onClick={handleUpload}
                 disabled={loading || !selectedFile}
               >
@@ -158,7 +159,7 @@ const Hero = () => {
             success={virusTotalSuccess}
             loadingText="Scanning with VirusTotal...."
             successText="Successfully Scanned with VirusTotal"
-            link="/upload/virus"
+            link="/upload/analysis"
           />
           <ProcessingStatus
             loading={capaLoading}

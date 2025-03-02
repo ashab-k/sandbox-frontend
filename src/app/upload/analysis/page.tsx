@@ -11,7 +11,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // In a real app, this would be an API call
     const storedData = localStorage.getItem("virus_total");
     console.log(storedData);
     if (storedData) {

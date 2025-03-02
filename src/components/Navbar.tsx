@@ -2,14 +2,18 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, Target, X } from "lucide-react";
 
 const navLinks = [
-  { name: "Home", href: "/" },
-  { name: "VirusTotal", href: "/upload/analysis" },
-  { name: "Dynamic Analysis", href: "/upload/dynamic" },
-  { name: "Capa", href: "/upload/capa" },
-  { name: "Code", href: "/upload/code" },
+  { name: "Home", href: "/", target: "" },
+  { name: "VirusTotal", href: "/upload/analysis", target: "" },
+  {
+    name: "VM",
+    href: "https://remotedesktop.google.com/access/session/0780a217-8709-48ee-d00a-8d2c5707f9cd",
+    target: "_blank",
+  },
+  { name: "Capa", href: "/upload/capa", target: "" },
+  { name: "Code", href: "/upload/code", target: "" },
 ];
 
 export default function Navbar() {
@@ -35,7 +39,11 @@ export default function Navbar() {
         <ul className="hidden md:flex space-x-6">
           {navLinks.map((link) => (
             <li key={link.name}>
-              <Link href={link.href} className="hover:text-gray-400">
+              <Link
+                href={link.href}
+                className="hover:text-gray-400"
+                target={link.target}
+              >
                 {link.name}
               </Link>
             </li>
