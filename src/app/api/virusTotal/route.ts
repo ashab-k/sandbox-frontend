@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const PROCESSING_SERVER_URL =
-  "https://ba74-2409-40f2-2a-5d6b-9ace-e639-4aab-c733.ngrok-free.app/virustotal";
+  "https://8e51-103-213-208-187.ngrok-free.app/virustotal";
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
     const response = await fetch(PROCESSING_SERVER_URL, {
       method: "POST",
       body: externalFormData,
+      cache: "no-store",
     });
 
     if (!response.ok) {

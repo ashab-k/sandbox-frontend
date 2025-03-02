@@ -157,8 +157,8 @@ const Hero = () => {
           <ProcessingStatus
             loading={virusTotalLoading}
             success={virusTotalSuccess}
-            loadingText="Scanning with VirusTotal...."
-            successText="Successfully Scanned with VirusTotal"
+            loadingText="Running static analysis...."
+            successText="Successfully ran static analysis"
             link="/upload/analysis"
           />
           <ProcessingStatus

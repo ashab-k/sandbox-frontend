@@ -5,8 +5,8 @@ import { useState } from "react";
 import { Menu, Target, X } from "lucide-react";
 
 const navLinks = [
-  { name: "Home", href: "/", target: "" },
-  { name: "VirusTotal", href: "/upload/analysis", target: "" },
+  { name: "Upload", href: "/upload", target: "" },
+  { name: "Static Analysis", href: "/upload/analysis", target: "" },
   {
     name: "VM",
     href: "https://remotedesktop.google.com/access/session/0780a217-8709-48ee-d00a-8d2c5707f9cd",
