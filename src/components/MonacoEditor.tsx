@@ -21,9 +21,7 @@ interface MonacoEditorProps {
 
 export default function MonacoEditor({
   cCode,
-  setCCode,
   assemblyCode,
-  setAssemblyCode,
 }: MonacoEditorProps) {
   const md = new MarkdownIt();
   const cEditorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
@@ -73,12 +71,12 @@ export default function MonacoEditor({
   };
 
   // Create separate mount handlers for each editor type
-  const handleCEditorMount: OnMount = (editor) => {
+  const handleCEditorMount: OnMount = (editor, monaco) => {
     cEditorRef.current = editor;
     editor.onDidChangeCursorSelection(() => handleSelectionChange(editor, "c"));
   };
 
-  const handleAsmEditorMount: OnMount = (editor) => {
+  const handleAsmEditorMount: OnMount = (editor, monaco) => {
     asmEditorRef.current = editor;
     editor.onDidChangeCursorSelection(() =>
       handleSelectionChange(editor, "asm")
@@ -147,11 +145,7 @@ export default function MonacoEditor({
               language="asm"
               theme="vs-dark"
               value={assemblyCode}
-              onChange={(value) => {
-                if (typeof value === "string") {
-                  setAssemblyCode({ decompiled_text: value, objdump_text: "" });
-                }
-              }}
+              onChange={() => {}}
               onMount={handleAsmEditorMount}
               options={{
                 minimap: { enabled: true },
@@ -187,11 +181,7 @@ export default function MonacoEditor({
               language="cpp"
               theme="vs-dark"
               value={cCode}
-              onChange={(value) => {
-                if (typeof value === "string") {
-                  setCCode({ decompiled_text: value, objdump_text: "" });
-                }
-              }}
+              onChange={() => {}}
               onMount={handleCEditorMount}
               options={{
                 minimap: { enabled: true },
