@@ -8,12 +8,7 @@ export default function Home() {
     decompiled_text: string;
     objdump_text: string;
   }>();
-  const fetchFileContent = async (filePath: string) => {
-    const response = await fetch(filePath);
-    return response.text();
-  };
 
-  // Load both text files on component mount
   useEffect(() => {
     const storedData = localStorage.getItem("code_response");
     if (storedData) {

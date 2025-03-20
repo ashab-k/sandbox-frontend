@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const PROCESSING_SERVER_URL =
-  "https://8e51-103-213-208-187.ngrok-free.app/decompile";
+import { endpoint } from "@/lib/endpoint";
+const PROCESSING_SERVER_URL = endpoint;
 
 export async function POST(req: NextRequest) {
   try {

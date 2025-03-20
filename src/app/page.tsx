@@ -1,24 +1,7 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import { InteractiveHoverButton } from "@/components/magicui/interactive-hover-button";
 
 const Home = () => {
-  const [state, setState] = useState(false);
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (!target.closest(".menu-btn")) setState(false);
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
   const stats = [
     {
       data: "6.06B",

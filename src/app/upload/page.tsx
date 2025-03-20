@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { InteractiveHoverButton } from "@/components/magicui/interactive-hover-button";
 import { FileUpload } from "@/components/ui/file-upload";
 import React, { useState } from "react";
@@ -8,10 +7,6 @@ import ProcessingStatus from "@/components/ProcessingStatus";
 
 const Hero = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [responseData, setResponseData] = useState<{
-    report: string;
-    extracted: string;
-  } | null>(null);
   const [loading, setLoading] = useState(false);
   const [codeResponseLoading, setCodeResponseLoading] = useState(false);
   const [decompilationSuccess, setDecompilationSuccess] = useState(false);
@@ -27,7 +22,6 @@ const Hero = () => {
       setDecompilationSuccess(false);
       setVirusTotalSucess(false);
       setCapaSuccess(false);
-      setResponseData(null);
     }
   };
 
@@ -57,7 +51,6 @@ const Hero = () => {
       }
 
       const data = await response.json();
-      setResponseData(data);
       localStorage.setItem("code_response", JSON.stringify(data));
       setDecompilationSuccess(true);
       console.log(data);

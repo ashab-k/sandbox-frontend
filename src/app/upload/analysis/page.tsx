@@ -5,10 +5,9 @@ import { MalwareAnalysisHeader } from "@/components/MalwareAnalysisHeader";
 import { ScanResultsTable } from "@/components/ScanResultsTable";
 import { StatsSummary } from "@/components/StatsSummary";
 import { Shield, AlertTriangle } from "lucide-react";
-
+import { VirusTotalAnalysis } from "@/lib/types";
 export default function Home() {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<any>();
 
   useEffect(() => {
     const storedData = localStorage.getItem("virus_total");
@@ -17,19 +16,6 @@ export default function Home() {
       setData(JSON.parse(storedData));
     }
   }, []);
-
-  if (!loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
-          <p className="text-lg font-medium">
-            Loading malware analysis data...
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   if (!data) {
     return (

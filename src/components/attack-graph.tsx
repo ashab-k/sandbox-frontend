@@ -12,11 +12,29 @@ interface Node {
   id: string;
   group: number;
   url?: string;
+  x?: number;
+  y?: number;
+  fx?: number | null;
+  fy?: number | null;
 }
 
 interface Link {
-  source: string;
-  target: string;
+  source: string | Node;
+  target: string | Node;
+  value: number;
+}
+
+// Define D3 simulation node type
+interface SimulationNode extends d3.SimulationNodeDatum {
+  id: string;
+  group: number;
+  url?: string;
+  x: number;
+  y: number;
+}
+
+// Define D3 simulation link type
+interface SimulationLink extends d3.SimulationLinkDatum<SimulationNode> {
   value: number;
 }
 
@@ -54,19 +72,21 @@ export default function AttackGraph({ data }: AttackGraphProps) {
 
     // Create a force simulation
     const simulation = d3
-      .forceSimulation(nodes as any)
+      .forceSimulation<SimulationNode>(nodes as unknown as SimulationNode[])
       .force(
         "link",
         d3
-          .forceLink(links)
-          .id((d: any) => d.id)
+          .forceLink<SimulationNode, SimulationLink>(
+            links as unknown as SimulationLink[]
+          )
+          .id((d: SimulationNode) => d.id)
           .distance(100)
       )
-      .force("charge", d3.forceManyBody().strength(-300))
+      .force("charge", d3.forceManyBody<SimulationNode>().strength(-300))
       .force("center", d3.forceCenter(width / 2, height / 2));
 
     const svg = d3
-      .select(svgRef.current)
+      .select<SVGSVGElement, unknown>(svgRef.current)
       .attr("viewBox", `0 0 ${width} ${height}`);
 
     // Define arrow marker
@@ -87,34 +107,36 @@ export default function AttackGraph({ data }: AttackGraphProps) {
     // Create links
     const link = svg
       .append("g")
-      .selectAll("line")
-      .data(links)
+      .selectAll<SVGLineElement, SimulationLink>("line")
+      .data(links as unknown as SimulationLink[])
       .join("line")
       .attr("stroke", "#999")
       .attr("stroke-opacity", 0.6)
-      .attr("stroke-width", (d: any) => Math.sqrt(d.value))
+      .attr("stroke-width", (d: SimulationLink) => Math.sqrt(d.value))
       .attr("marker-end", "url(#arrowhead)");
 
     // Create node groups
     const node = svg
       .append("g")
-      .selectAll(".node")
-      .data(nodes)
+      .selectAll<SVGGElement, SimulationNode>(".node")
+      .data(nodes as unknown as SimulationNode[])
       .join("g")
       .attr("class", "node")
       .call(
         d3
-          .drag()
+          .drag<SVGGElement, SimulationNode>()
           .on("start", dragstarted)
           .on("drag", dragged)
-          .on("end", dragended) as any
+          .on("end", dragended)
       );
 
     // Add circles to nodes
     node
       .append("circle")
-      .attr("r", (d: any) => (d.group === 0 ? 20 : d.group === 1 ? 15 : 10))
-      .attr("fill", (d: any) => {
+      .attr("r", (d: SimulationNode) =>
+        d.group === 0 ? 20 : d.group === 1 ? 15 : 10
+      )
+      .attr("fill", (d: SimulationNode) => {
         if (d.group === 0) return "#e53e3e"; // Root node (red)
         if (d.group === 1) return "#dd6b20"; // Tactics (orange)
         return "#3182ce"; // Techniques (blue)
@@ -125,16 +147,18 @@ export default function AttackGraph({ data }: AttackGraphProps) {
     // Add text labels to nodes
     node
       .append("text")
-      .attr("dx", (d: any) => (d.group === 0 ? 25 : d.group === 1 ? 20 : 15))
+      .attr("dx", (d: SimulationNode) =>
+        d.group === 0 ? 25 : d.group === 1 ? 20 : 15
+      )
       .attr("dy", ".35em")
-      .text((d: any) => d.id)
-      .attr("font-size", (d: any) =>
+      .text((d: SimulationNode) => d.id)
+      .attr("font-size", (d: SimulationNode) =>
         d.group === 0 ? "14px" : d.group === 1 ? "12px" : "10px"
       )
       .attr("fill", "#333");
 
     // Add click handler for technique nodes
-    node.on("click", (event: any, d: any) => {
+    node.on("click", (event: MouseEvent, d: SimulationNode) => {
       if (d.url) {
         window.open(d.url, "_blank");
       }
@@ -142,13 +166,13 @@ export default function AttackGraph({ data }: AttackGraphProps) {
 
     // Add hover effect
     node
-      .on("mouseover", function () {
+      .on("mouseover", function (this: SVGGElement) {
         d3.select(this)
           .select("circle")
           .attr("stroke", "#333")
           .attr("stroke-width", 2);
       })
-      .on("mouseout", function () {
+      .on("mouseout", function (this: SVGGElement) {
         d3.select(this)
           .select("circle")
           .attr("stroke", "#fff")
@@ -156,35 +180,44 @@ export default function AttackGraph({ data }: AttackGraphProps) {
       });
 
     // Add title for tooltip
-    node.append("title").text((d: any) => d.id);
+    node.append("title").text((d: SimulationNode) => d.id);
 
     // Update positions on simulation tick
     simulation.on("tick", () => {
       link
-        .attr("x1", (d: any) => d.source.x)
-        .attr("y1", (d: any) => d.source.y)
-        .attr("x2", (d: any) => d.target.x)
-        .attr("y2", (d: any) => d.target.y);
+        .attr("x1", (d: SimulationLink) => (d.source as SimulationNode).x)
+        .attr("y1", (d: SimulationLink) => (d.source as SimulationNode).y)
+        .attr("x2", (d: SimulationLink) => (d.target as SimulationNode).x)
+        .attr("y2", (d: SimulationLink) => (d.target as SimulationNode).y);
 
-      node.attr("transform", (d: any) => `translate(${d.x},${d.y})`);
+      node.attr("transform", (d: SimulationNode) => `translate(${d.x},${d.y})`);
     });
 
     // Drag functions
-    function dragstarted(event: any) {
+    function dragstarted(
+      event: d3.D3DragEvent<SVGGElement, SimulationNode, SimulationNode>,
+      d: SimulationNode
+    ) {
       if (!event.active) simulation.alphaTarget(0.3).restart();
-      event.subject.fx = event.subject.x;
-      event.subject.fy = event.subject.y;
+      d.fx = d.x;
+      d.fy = d.y;
     }
 
-    function dragged(event: any) {
-      event.subject.fx = event.x;
-      event.subject.fy = event.y;
+    function dragged(
+      event: d3.D3DragEvent<SVGGElement, SimulationNode, SimulationNode>,
+      d: SimulationNode
+    ) {
+      d.fx = event.x;
+      d.fy = event.y;
     }
 
-    function dragended(event: any) {
+    function dragended(
+      event: d3.D3DragEvent<SVGGElement, SimulationNode, SimulationNode>,
+      d: SimulationNode
+    ) {
       if (!event.active) simulation.alphaTarget(0);
-      event.subject.fx = null;
-      event.subject.fy = null;
+      d.fx = null;
+      d.fy = null;
     }
 
     // Cleanup

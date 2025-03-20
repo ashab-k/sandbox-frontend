@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { endpoint } from "@/lib/endpoint";
 
-const PROCESSING_SERVER_URL =
-  "https://8e51-103-213-208-187.ngrok-free.app/capa";
-
+const PROCESSING_SERVER_URL = endpoint;
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
