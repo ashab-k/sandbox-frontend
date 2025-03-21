@@ -59,7 +59,7 @@ const Hero = () => {
       alert("Something went wrong!");
     } finally {
       setCodeResponseLoading(false);
-      setLoading(false);
+     
     } */
 
     try {
@@ -107,6 +107,7 @@ const Hero = () => {
       alert("Something went wrong!");
     } finally {
       setCapaLoading(false);
+      setLoading(false);
     }
   };
 
