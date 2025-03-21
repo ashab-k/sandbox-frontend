@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { InteractiveHoverButton } from "@/components/magicui/interactive-hover-button";
 

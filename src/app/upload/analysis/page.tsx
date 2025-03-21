@@ -5,7 +5,6 @@ import { MalwareAnalysisHeader } from "@/components/MalwareAnalysisHeader";
 import { ScanResultsTable } from "@/components/ScanResultsTable";
 import { StatsSummary } from "@/components/StatsSummary";
 import { Shield, AlertTriangle } from "lucide-react";
-import { VirusTotalAnalysis } from "@/lib/types";
 export default function Home() {
   const [data, setData] = useState<any>();
 

@@ -71,12 +71,12 @@ export default function MonacoEditor({
   };
 
   // Create separate mount handlers for each editor type
-  const handleCEditorMount: OnMount = (editor, monaco) => {
+  const handleCEditorMount: OnMount = (editor) => {
     cEditorRef.current = editor;
     editor.onDidChangeCursorSelection(() => handleSelectionChange(editor, "c"));
   };
 
-  const handleAsmEditorMount: OnMount = (editor, monaco) => {
+  const handleAsmEditorMount: OnMount = (editor) => {
     asmEditorRef.current = editor;
     editor.onDidChangeCursorSelection(() =>
       handleSelectionChange(editor, "asm")

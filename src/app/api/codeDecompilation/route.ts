@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { endpoint } from "@/lib/endpoint";
-const PROCESSING_SERVER_URL = endpoint;
+const PROCESSING_SERVER_URL = `${endpoint}/decompile`;
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,15 +14,18 @@ export async function POST(req: NextRequest) {
     // Forward the file to the external processing server
     const externalFormData = new FormData();
     externalFormData.append("file", file);
+    console.log("yo");
 
     const response = await fetch(PROCESSING_SERVER_URL, {
       method: "POST",
       body: externalFormData,
     });
+    console.log(response.status);
 
     if (!response.ok) {
       return NextResponse.json({ error: "Processing failed" }, { status: 500 });
     }
+    console.log("yo3");
 
     const data = await response.json(); // Expect JSON response with two text fields
     return NextResponse.json({

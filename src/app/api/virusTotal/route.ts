@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { endpoint } from "@/lib/endpoint";
-const PROCESSING_SERVER_URL = endpoint;
+const PROCESSING_SERVER_URL = `${endpoint}/virustotal`;
 
 export async function POST(req: NextRequest) {
   try {

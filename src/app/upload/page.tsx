@@ -38,7 +38,7 @@ const Hero = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
 
-    try {
+    /* try {
       const response = await fetch("/api/codeDecompilation", {
         method: "POST",
         body: formData,
@@ -60,7 +60,7 @@ const Hero = () => {
     } finally {
       setCodeResponseLoading(false);
       setLoading(false);
-    }
+    } */
 
     try {
       setVirusTotalLoading(true);
@@ -140,13 +140,13 @@ const Hero = () => {
               </InteractiveHoverButton>
             </div>
           </div>{" "}
-          <ProcessingStatus
+          {/*  <ProcessingStatus
             loading={codeResponseLoading}
             success={decompilationSuccess}
             loadingText="Decompiling Code...."
             successText="Successfully Decompiled Code"
             link="/upload/code"
-          />
+          /> */}
           <ProcessingStatus
             loading={virusTotalLoading}
             success={virusTotalSuccess}
